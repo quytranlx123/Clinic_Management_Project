@@ -1,0 +1,24 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt lịch khám{% endblock %}
+
+{% block content %}
+<h1 class="text-center">TẠO LỊCH KHÁM</h1>
+
+{% if err_msg %}
+  <div class="alert alert-danger">
+    <h4>{{ err_msg }}</h4>
+  </div>
+{% endif %}
+
+<form method="post" action="{{ url_for('create_schedule') }}">
+    <div class="form-group">
+        <label for="ngayTaolich">Chọn ngày</label>
+        <input type="date" class="form-control" id="ngayTaolich" name="ngayTaolich" min="{{ date.today().strftime('%Y-%m-%d') }}">
+    </div>
+  <input type="submit" value="Xác nhận" class="btn btn-danger">
+</form>
+
+<h1>{{ ngayTaoLich }}</h1>
+
+{% endblock %}

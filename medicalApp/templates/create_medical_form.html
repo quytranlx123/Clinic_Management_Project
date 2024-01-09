@@ -1,0 +1,105 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt lịch khám{% endblock %}
+
+{% block content %}
+<h1 class="text-center">LẬP PHIẾU KHÁM</h1>
+
+{% if err_msg %}
+  <div class="alert alert-danger">
+    <h4>{{ err_msg }}</h4>
+  </div>
+{% endif %}
+
+{% if current_user.is_authenticated and current_user.user_role.__eq__(BENHNHAN) %}
+<form>
+  <div class="form-group">
+      <label for="nguoiDung_id">Mã ID</label>
+      <input type="text" class="form-control" id="nguoiDung_id" name="nguoiDung_id" placeholder="Mã ID..." required>
+  </div>
+
+
+  <div class="form-group">
+      <label for="bacSy">Bác sỹ</label>
+      <input type="text" class="form-control" id="bacSy" name="bacSy" placeholder="Tên bác sỹ lập phiếu khám..." required>
+  </div>
+
+  <div class="form-group">
+    <label for="trieuChung">Triệu chứng</label>
+    <input type="text" class="form-control" id="trieuChung" name="trieuChung" placeholder="Triệu chứng..." required>
+  </div>
+
+  <div class="form-group">
+    <label for="chuanDoan">Chuẩn đoán</label>
+    <input type="text" class="form-control" id="chuanDoan" name="chuanDoan" placeholder="Chuẩn đoán..." required>
+  </div>
+
+  <div class="form-group">
+    <label for="tienKham">Tiền khám</label>
+    <input type="text" class="form-control" id="tienKham" name="tienKham" value="100000" readonly>
+  </div>
+
+
+  <input type="submit" value="Lập phiếu" class="btn btn-danger">
+</form>
+{% endif %}
+
+<br>
+<div class="row">
+    <table class="table">
+      <tr>
+        <th>Mã thuốc</th>
+        <th>Tên thuốc</th>
+        <th>Đơn vị tính</th>
+        <th>Giá</th>
+        <th>Kê thuốc</th>
+      </tr>
+
+      {% for thuoc_id, tenThuoc, tenDonViTinh, giaBan in list_thuoc %}
+      <tr>
+        <td>{{ thuoc_id }}</td>
+        <td>{{ tenThuoc }}</td>
+        <td>{{ tenDonViTinh }}</td>
+        <th>{{ giaBan }}</th>
+        <td>
+            <a href="#" class="btn btn-primary" onclick="addThuocInToaThuoc({{ thuoc_id }}, '{{ tenThuoc }}', {{ giaBan }})">Thêm</a>
+        </td>
+      </tr>
+      {% endfor %}
+  </table>
+
+
+</div>
+
+<br>
+
+
+
+
+
+
+
+<script>
+document.getElementById('keDonThuoc').addEventListener('change', function() {
+    var select = document.getElementById('keDonThuoc');
+    var selectedOptions = Array.from(select.selectedOptions).map(option => option.value);
+
+    var soLuongContainer = document.getElementById('soLuongContainer');
+    soLuongContainer.innerHTML = ''; // Xóa các input số lượng cũ
+
+    selectedOptions.forEach(function(thuocId) {
+        var label = document.createElement('label');
+        label.textContent = `Nhập số lượng cho ${select.options[select.selectedIndex].text}: `;
+
+        var input = document.createElement('input');
+        input.type = 'number';
+        input.name = `soLuong_${thuocId}`;
+
+        soLuongContainer.appendChild(label);
+        soLuongContainer.appendChild(input);
+        soLuongContainer.appendChild(document.createElement('br')); // Thêm dòng mới
+    });
+});
+</script>
+
+{% endblock %}

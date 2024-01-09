@@ -1,0 +1,22 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Trang chủ{% endblock %}
+
+{% block css %}
+<style>
+    body {
+        background-image: url('{{ url_for("static", filename="uploads/medicalLogo.jpg") }}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    .footer{
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

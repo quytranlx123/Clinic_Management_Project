@@ -1,0 +1,86 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt lịch khám{% endblock %}
+
+{% block content %}
+<h1 class="text-center" xmlns:>TOA THUỐC</h1>
+{% if err_msg %}
+  <div class="alert alert-danger">
+    <h4>{{ err_msg }}</h4>
+  </div>
+{% endif %}
+
+<form>
+  <div class="form-group">
+    <label for="phieuKham_id">Mã phiếu khám</label>
+    <select id="phieuKham_id" class="form-control" name="phieuKham_id">
+      {% for item in ds_phieu_kham %}
+        <option value="{{ item.id }}" selected>{{ item.id }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="nguoiDung_id">Mã bệnh nhân</label>
+    <select id="nguoiDung_id" class="form-control" name="nguoiDung_id">
+      {% for item in ds_phieu_kham %}
+        <option value="{{ item.nguoiDung_id }}" selected>{{ item.nguoiDung_id }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+    {% if 'toaThuoc' in session and session['toaThuoc'] %}
+    <table class="table">
+        <tr>
+            <th>Mã thuốc</th>
+            <th>Tên thuốc</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+        </tr>
+
+        {% for tt in session['toaThuoc'].values() %}
+        <tr>
+            <th>{{ tt.id }}</th>
+            <th>{{ tt.tenThuoc }}</th>
+            <th>{{ "{:,.1f}".format(tt.giaBan) }} VNĐ</th>
+            <th>{{ tt.soLuong }}</th>
+        </tr>
+        {% endfor %}
+    </table>
+
+  <div class="form-group">
+    <label for="tongTienThuoc">Tổng tiền thuốc</label>
+    <input type="text" class="form-control" id="tongTienThuoc" name="tongTienThuoc" value="{{stats.total_amount}}" readonly>
+  </div>
+
+    <input type="submit" value="Xác nhận" class="btn btn-danger">
+</form>
+
+
+
+
+
+
+
+{% else %}
+
+<h5>Hiện tại chưa có thuốc trong toa thuốc!!</h5>
+
+
+{% endif %}
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Lắng nghe sự kiện thay đổi của phieuKham_id
+    document.getElementById('phieuKham_id').addEventListener('change', function() {
+        // Lấy index của option đang được chọn trong phieuKham_id
+        let selectedIndex = this.selectedIndex;
+
+        // Chọn option tương ứng trong nguoiDung_id dựa trên selectedIndex
+        let nguoiDungSelect = document.getElementById('nguoiDung_id');
+        nguoiDungSelect.selectedIndex = selectedIndex;
+    });
+});
+</script>
+{% endblock %}

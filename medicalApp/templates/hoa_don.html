@@ -1,0 +1,62 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt lịch khám{% endblock %}
+
+{% block content %}
+<h1 class="text-center">DANH SÁCH HÓA ĐƠN</h1>
+
+{% if err_msg %}
+  <div class="alert alert-danger">
+    <h4>{{ err_msg }}</h4>
+  </div>
+{% endif %}
+
+<div class="row">
+  <div class="container">
+    <div class="form-group">
+      <form>
+          <div class="form-group">
+              <label for="hoTen">Tìm kiếm</label>
+              <input type="text" class="form-control" id="hoTen" name="hoTen" placeholder="Tìm kiếm hóa đơn theo tên bệnh nhân...">
+          </div>
+        <input type="submit" value="Tim kiếm" class="btn btn-danger">
+      </form>
+    </div>
+    <table class="table">
+  <tr>
+    <th>Mã HĐ</th>
+    <th>Họ và tên</th>
+    <th>Ngày khám</th>
+    <th>Tiền khám</th>
+    <th>Tiền thuốc</th>
+    <th>Tổng tiền</th>
+    <th>Trạng thái</th>
+  </tr>
+
+<!--  {% for phieuKham_id, ngayKham, HoTen, tongTien in danh_sach_tong_tien %}-->
+<!--  <h1>{{ phieuKham_id }}</h1>-->
+<!--  <h1>{{ ngayKham }}</h1>-->
+<!--  <h1>{{ HoTen }}</h1>-->
+<!--  <h1>{{ tongTien }}</h1>-->
+<!--  {% endfor %}-->
+
+  {% for hoaDon_id, hoTen, ngayKham, tienKham, tienThuoc, trangThai in load_ds_hoa_don %}
+  <tr>
+    <td>{{ hoaDon_id }}</td>
+    <td>{{ hoTen }}</td>
+    <td>{{ ngayKham }}</td>
+    <td>{{ "{:,.1f}".format(tienKham) }} VNĐ</td>
+    <td>{{ "{:,.1f}".format(tienThuoc) }} VNĐ</td>
+    <td>{{ "{:,.1f}".format(tienKham + tienThuoc) }} VNĐ</td>
+    {% if trangThai == 0 %}
+    <td>Chưa thanh toán</td>
+    {% else %}
+    <td>Đã thanh toán</td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+{% if current_user.is_authenticated %}
+<h1 class="text-info text-center">CHÀO MỪNG BẠN ĐẾN VỚI TRANG QUẢN LÝ PHÒNG MẠCH TƯ QHN</h1>
+<!--<h1 class="text-info">WELCOME <span class="text-danger">{{ current_user.Ten }}</span> TO OUR WEBSITE!!</h1>-->
+{% endif %}
+{% endblock %}

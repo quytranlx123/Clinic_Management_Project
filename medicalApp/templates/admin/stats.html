@@ -1,0 +1,184 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<h1 CLASS="text-center text-danger" style="margin: 30px 0;">BÁO CÁO DOANH THU THEO THÁNG</h1>
+
+<div class="row">
+  <div class="col-md-5">
+    <table class="table">
+  <tr>
+    <th>Ngày</th>
+    <th>Số bệnh nhân</th>
+    <th>Doanh thu</th>
+    <th>Tỷ lệ</th>
+  </tr>
+
+  {% for ngayKham, soBenhNhan, doanhThu in thong_ke_01 %}
+  <tr>
+    <td>{{ ngayKham }}</td>
+    <td>{{ soBenhNhan }}</td>
+    <td>{{ "{:,.1f}".format(doanhThu) }} VNĐ</td>
+    <td>{{ "{:,.1f}".format((soBenhNhan / tongBenhNhan) * 100) }}%</td>
+  </tr>
+  {% endfor %}
+</table>
+  <h5>Tổng doanh thu: {{ "{:,.1f}".format(tongDoanhThu) }} VNĐ</h5>
+  </div>
+  <div class="col-md-7">
+    <div class="form-group">
+      <form>
+          <div class="form-group">
+              <label for="thang01">Nhập tháng</label>
+                <select class="form-control" id="thang01" name="thang01">
+                    <option value="1">Tháng 1</option>
+                    <option value="2">Tháng 2</option>
+                    <option value="3">Tháng 3</option>
+                    <option value="4">Tháng 4</option>
+                    <option value="5">Tháng 5</option>
+                    <option value="6">Tháng 6</option>
+                    <option value="7">Tháng 7</option>
+                    <option value="8">Tháng 8</option>
+                    <option value="9">Tháng 9</option>
+                    <option value="10">Tháng 10</option>
+                    <option value="11">Tháng 11</option>
+                    <option value="12">Tháng 12</option>
+                </select>
+          </div>
+        <input type="submit" value="Xác nhận" class="btn btn-danger">
+      </form>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+</div>
+
+<br>
+<br>
+
+
+<h1 CLASS="text-center text-danger" style="margin: 30px 0;">BÁO CÁO SỬ DỤNG THUỐC</h1>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table">
+  <tr>
+    <th>Mã thuốc</th>
+    <th>Tên thuốc</th>
+    <th>Đơn vị tính</th>
+    <th>Số lượng</th>
+    <th>Số lần dùng</th>
+  </tr>
+
+  {% for thuoc_id, tenThuoc, tenDonViTinh, soLuongThuoc, soLanDung in thong_ke_02 %}
+  <tr>
+    <td>{{ thuoc_id }}</td>
+    <td>{{ tenThuoc }}</td>
+    <td>{{ tenDonViTinh }}</td>
+    <td>{{ soLuongThuoc }}</td>
+    <td>{{ soLanDung }}</td>
+  </tr>
+  {% endfor %}
+</table>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+        <form>
+            <div class="form-group">
+                <label for="thang02">Chọn tháng:</label>
+                <select class="form-control" id="thang02" name="thang02">
+                    <option value="1">Tháng 1</option>
+                    <option value="2">Tháng 2</option>
+                    <option value="3">Tháng 3</option>
+                    <option value="4">Tháng 4</option>
+                    <option value="5">Tháng 5</option>
+                    <option value="6">Tháng 6</option>
+                    <option value="7">Tháng 7</option>
+                    <option value="8">Tháng 8</option>
+                    <option value="9">Tháng 9</option>
+                    <option value="10">Tháng 10</option>
+                    <option value="11">Tháng 11</option>
+                    <option value="12">Tháng 12</option>
+                </select>
+            </div>
+            <input type="submit" value="Xác nhận" class="btn btn-danger">
+        </form>
+    </div>
+
+    <canvas id="myChart02"></canvas>
+  </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let r, g, b
+  let labels = [], counter = [], colors = [], labels02 = [], counter02 = [], colors02 = []
+  {% for ngayKham, soBenhNhan, doanhThu in thong_ke_01 %}
+    labels.push('{{ ngayKham }}')
+    counter.push({{ doanhThu }})
+
+    r = parseInt(Math.random()*255)
+    g = parseInt(Math.random()*255)
+    b = parseInt(Math.random()*255)
+    colors.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+    {% endfor %}
+
+  {% for thuoc_id, tenThuoc, tenDonViTinh, soLuongThuoc, soLanDung in thong_ke_02 %}
+    labels02.push('{{ tenThuoc }}')
+    counter02.push({{ soLanDung }})
+
+    r = parseInt(Math.random()*255)
+    g = parseInt(Math.random()*255)
+    b = parseInt(Math.random()*255)
+    colors02.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+    {% endfor %}
+
+  window.onload = function() {
+    const ctx = document.getElementById('myChart');
+    const ctx02 = document.getElementById('myChart02');
+    new Chart(ctx, {
+    type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Thống kê doanh thu các ngày trong tháng',
+          data: counter,
+          backgroundColor: colors,
+          borderColor: colors,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+
+    new Chart(ctx02, {
+    type: 'bar',
+      data: {
+        labels: labels02,
+        datasets: [{
+          label: 'Thống kê doanh thu các ngày trong tháng',
+          data: counter02,
+          backgroundColor: colors02,
+          borderColor: colors02,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+</script>
+
+{% endblock %}

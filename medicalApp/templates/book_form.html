@@ -1,0 +1,69 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt lịch khám{% endblock %}
+
+{% block content %}
+<h1 class="text-center">ĐẶT LỊCH KHÁM</h1>
+
+{% if err_msg %}
+  <div class="alert alert-danger">
+    <h4>{{ err_msg }}</h4>
+  </div>
+{% endif %}
+
+
+
+<form method="post" action="{{ url_for('book_form') }}">
+  <div class="form-group">
+    <label for="dslk">Chọn lịch khám</label>
+    <select id="dslk" class="form-control" name="dslk">
+      {% for ds in dslk %}
+        <option value="{{ ds.id }}" selected>{{ ds.NgayTao }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="hoTen">Họ và tên</label>
+    <input type="text" class="form-control" id="hoTen" name="hoTen" placeholder="Nhập họ và tên của bệnh nhân...">
+  </div>
+  <div class="form-group">
+    <label for="gioiTinh">Giới tính</label>
+    <select id="gioiTinh" class="form-control" name="gioiTinh">
+       <option selected>Nam</option>
+       <option>Nữ</option>
+       <option>Không</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="namSinh">Năm sinh</label>
+    <input type="date" class="form-control" id="namSinh" name="namSinh" placeholder="yyyy-mm-dd">
+  </div>
+  <div class="form-group">
+    <label for="diaChi">Địa chỉ</label>
+    <input type="text" class="form-control" id="diaChi" name="diaChi" placeholder="Nhập địa chỉ của bệnh nhân...">
+  </div>
+  <div class="form-group">
+    <label for="SDT">Số điện thoại</label>
+    <input type="text" class="form-control" id="SDT" name="SDT" placeholder="Nhập số điện thoại của bệnh nhân...">
+  </div>
+  <input type="submit" value="Xác nhận" class="btn btn-danger">
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var lk_id = "{{ session['lk_id'] }}";  // Lấy giá trị lk_id từ session
+
+        var selectBox = document.getElementById('dslk');
+        for (var i = 0; i < selectBox.options.length; i++) {
+            if (selectBox.options[i].value == lk_id) {
+                selectBox.selectedIndex = i;  // Chọn lựa chọn tại vị trí i
+                break;
+            }
+        }
+    });
+
+</script>
+
+
+{% endblock %}
